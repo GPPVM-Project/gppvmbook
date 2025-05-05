@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introdução"><a class="header" href="#introdução">Introdução</a></h1>
+<p>SkyLC é uma linguagem de programação moderna, projetada para integração facilitada com Rust,
+possui sistema de tipagem estática e inferência de tipos. O foco futuro da linguagem é a
+execução paralela massiva em multiplas arquiteturas de GPUs.</p>
+<p>Este livro é o guia oficial da linguagem SkyLC. Nele, você aprenderá:</p>
+<ul>
+<li>Como compilar programas usando o compilador <code>skylc</code></li>
+<li>Como executar programas na máquina virtual <code>skyvm</code></li>
+<li>A sintaxe e os fundamentos da linguagem</li>
+<li>Como o sistema de tipos e inferência funciona</li>
+<li>Como criar suas próprias funções de módulo</li>
+<li>Como criar seus próprios tipos de objetos</li>
+<li>Como criar funções internas</li>
+<li>Conceitos avançados coerção e arquétipos</li>
+<li>Como organizar projetos maiores com módulos</li>
+<li>Exemplos práticos de programas reais escritos em SkyL</li>
+<li>Como chamar funções Rust por meio de código escrivo em SkyL</li>
+<li>Como escrever suas próprias bibliotecas Rust para integração com SkyL</li>
+</ul>
+<p>Se você está vindo de outras linguagens como Python, C, Rust ou Java, vai se sentir em casa rapidamente com a sintaxe expressiva da SkyL e seu foco em segurança sem perder desempenho.
+Atualmente a máquina virtual não conta com um compilador JIT</p>
+<p>Vamos começar!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="primeiros-passos"><a class="header" href="#primeiros-passos">Primeiros passos</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="primeiro-programa"><a class="header" href="#primeiro-programa">Primeiro Programa</a></h1>
+<p>Todo mundo começa com um clássico: <strong>Hello, World!</strong></p>
+<p>Vamos escrever nosso primeiro programa em <strong>SkyL</strong>. Ele vai simplesmente exibir uma mensagem na tela — mas é o primeiro passo para coisas muito maiores.</p>
+<p>Abra seu editor de código favorito (pode ser um simples editor de texto ou uma IDE mais completa) e crie um arquivo chamado <code>hello_world.skyl</code> dentro da pasta <code>src</code> do seu projeto. Dentro desse arquivo, adicione o seguinte código:</p>
+<pre><code class="language-skyl">import std.io;
+
+def main() -&gt; void {
+    print("Hello World");
+}
+</code></pre>
+<p>Esse código faz exatamente o que parece: define uma função <code>main</code>, o ponto de entrada do nosso programa, e imprime a frase "Hello World" no terminal.</p>
+<p>Agora vamos compilar e executar.</p>
+<p>No terminal, dentro da raiz do seu projeto, execute:</p>
+<pre><code class="language-sh">skyl -c Sky.toml
+</code></pre>
+<p>Esse comando lê o arquivo de configuração <code>Sky.toml</code> e compila os arquivos <code>.skyl</code>. O resultado será um arquivo bytecode com extensão <code>.skyc</code>.</p>
+<p>Para executar o programa compilado, digite:</p>
+<pre><code class="language-sh">skyl -e hello_world.skyc
+</code></pre>
+<p>Se tudo der certo, você verá a mensagem:</p>
+<pre><code>Hello World
+</code></pre>
+<p>Parabéns! Você acabou de rodar seu primeiro programa em SkyL 🎉</p>
+<p>Agora vamos entender a estrutura deste programa. Ufa, parece bastante coisa para um começo — mas vamos por partes.</p>
+<p>A primeira linha:</p>
+<pre><code class="language-skyl">import std.io;
+</code></pre>
+<p>traz o módulo <code>io</code> da biblioteca padrão (<code>std</code>) para o nosso arquivo, permitindo que a gente use funções de entrada e saída — como a <code>print</code>, que usamos logo em seguida.</p>
+<p>Na sequência, temos a definição da função <code>main</code>:</p>
+<pre><code class="language-skyl">def main() -&gt; void {
+    print("Hello World");
+}
+</code></pre>
+<p>Essa função é o ponto de entrada do programa — é onde a execução começa.<br />
+A sintaxe <code>def nome() -&gt; tipo</code> define uma função. No nosso caso, <code>main</code> não recebe parâmetros e retorna <code>void</code>, ou seja, nada.</p>
+<p>Dentro da função, chamamos <code>print("Hello World")</code>, que escreve a mensagem no terminal. Como usamos <code>import std.io</code>, temos acesso à função <code>print</code> da biblioteca padrão.</p>
+<p>Simples, né?</p>
+<p>Nos próximos capítulos, vamos explorar variáveis, tipos, controle de fluxo e muito mais. Mas por agora, respire fundo: você já escreveu, compilou e executou um programa completo em SkyL.</p>
+<p>Nada mal para um primeiro passo 🚀</p>
+<p>Ah, e aqui vai uma dica interessante: na verdade, você <strong>não precisa</strong> escrever a linha <code>import std.io;</code>.</p>
+<p>Isso acontece porque o módulo <code>std.io</code> faz parte do <em>prelude</em> da linguagem — um conjunto de funções, tipos e módulos que são automaticamente importados em todo programa SkyL. Isso significa que funções como <code>print</code> já estão disponíveis por padrão, sem a necessidade de <code>import</code>.</p>
+<p>Ou seja, o exemplo anterior funcionaria perfeitamente mesmo assim:</p>
+<pre><code class="language-skyl">def main() -&gt; void {
+    print("Hello World");
+}
+</code></pre>
+<p>A gente colocou o <code>import std.io</code> apenas para mostrar como seria feito caso fosse necessário, e também para te familiarizar com a sintaxe de importação. Mas no dia a dia, pode ficar tranquilo: o básico já está ao seu alcance sem esforço 😊</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="variáveis"><a class="header" href="#variáveis">Variáveis</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tipos-e-inferência"><a class="header" href="#tipos-e-inferência">Tipos e Inferência</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="controle-de-fluxo"><a class="header" href="#controle-de-fluxo">Controle de fluxo</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="funções"><a class="header" href="#funções">Funções</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="módulos-e-importação"><a class="header" href="#módulos-e-importação">Módulos e Importação</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="compilando-com-skylc"><a class="header" href="#compilando-com-skylc">Compilando com SkyLC</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="executando-com-skyvm"><a class="header" href="#executando-com-skyvm">Executando com SkyVM</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="projetos-de-exemplo"><a class="header" href="#projetos-de-exemplo">Projetos de exemplo</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/skyhl.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
